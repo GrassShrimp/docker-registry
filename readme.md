@@ -5,7 +5,7 @@
 
 2. create password file
 
-        $ docker run --rm --entrypoint htpasswd registry -Bbn testuser testpassword > ./auth/htpasswd
+        $ docker run --rm --entrypoint htpasswd registry -Bbn testuser testpassword > ./auth/nginx.htpasswd
 
 3. service start up
 
