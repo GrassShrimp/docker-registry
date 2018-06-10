@@ -15,17 +15,17 @@ services:
     container_name: nginx
     networks: 
     - registry
-  docker-registry-frontend:
-    image: "konradkleine/docker-registry-frontend:v2"
+  docker-registry-web:
+    image: "hyper/docker-registry-web"
     ports:
-    - 127.0.0.1:8080:80
+    - 127.0.0.1:8080:8080
     environment:
-    - ENV_DOCKER_REGISTRY_HOST=registry
-    - ENV_DOCKER_REGISTRY_PORT=5000
-    - ENV_DOCKER_REGISTRY_USE_SSL=1
-    - ENV_MODE_BROWSE_ONLY=false
+    - REGISTRY_URL=http://registry:5000/v2/
+    - REGISTRY_NAME=registry:5000
+    volumes:
+    - ./registry-web/config.yml:/conf/config.yml
     restart: always
-    container_name: registry-frontend
+    container_name: registry-web
     networks: 
     - registry
   registry:
@@ -33,7 +33,8 @@ services:
     ports:
     - 127.0.0.1:5000:5000
     volumes:
-    - ./registry:/var/lib/registry
+    - ./registry/images:/var/lib/registry
+    - ./registry/config.yml:/etc/docker/registry/config.yml
     restart: always
     container_name: registry
     networks: 
